@@ -1,0 +1,48 @@
+# Sprint v1.0 - Foundation
+# Status: COMPLETE
+version: "v1.0"
+name: "Foundation"
+status: complete
+completed_date: "2026-01-09"
+progress: 100
+duration: "2 weeks"
+
+stories:
+  - id: S1.1
+    title: "Project scaffolding"
+    description: "Create src/, config/, api/, cli/, tests/ directories"
+    status: complete
+    completed_date: "2026-01-09"
+    
+  - id: S1.2
+    title: "Agent registry configuration"
+    description: "Create agents.yml with 7 agents (Claude, Gemini, GPT, Grok, Aider, Codex, Goose)"
+    status: complete
+    completed_date: "2026-01-09"
+    
+  - id: S1.3
+    title: "Configuration loader"
+    description: "Implement config.py with Pydantic models for type-safe config loading"
+    status: complete
+    completed_date: "2026-01-09"
+    
+  - id: S1.4
+    title: "Orchestrator skeleton"
+    description: "Create orchestrator.py with pipeline placeholders"
+    status: complete
+    completed_date: "2026-01-09"
+    
+  - id: S1.5
+    title: "Unit tests"
+    description: "Write unit tests for config and orchestrator (31 tests passing)"
+    status: complete
+    completed_date: "2026-01-09"
+
+deliverables:
+  - config/agents.yml
+  - config/council.yml
+  - config/settings.yml
+  - src/config.py
+  - src/orchestrator.py
+  - tests/test_config.py
+  - tests/test_orchestrator.py

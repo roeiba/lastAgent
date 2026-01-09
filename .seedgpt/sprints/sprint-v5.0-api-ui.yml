@@ -1,0 +1,53 @@
+# Sprint v5.0 - API & UI
+# Status: COMPLETE
+version: "v5.0"
+name: "API & UI"
+status: complete
+completed_date: "2026-01-09"
+progress: 100
+duration: "2 weeks"
+
+stories:
+  - id: S5.1
+    title: "FastAPI application"
+    description: "Main app with CORS, lifespan handlers, router includes"
+    status: complete
+    completed_date: "2026-01-09"
+    
+  - id: S5.2
+    title: "Chat completions endpoint"
+    description: "OpenAI-compatible POST /v1/chat/completions"
+    status: complete
+    completed_date: "2026-01-09"
+    
+  - id: S5.3
+    title: "Agents endpoint"
+    description: "GET /v1/agents for agent discovery"
+    status: complete
+    completed_date: "2026-01-09"
+    
+  - id: S5.4
+    title: "Decisions endpoint"
+    description: "GET /v1/decisions for decision history"
+    status: complete
+    completed_date: "2026-01-09"
+    
+  - id: S5.5
+    title: "Feedback endpoint"
+    description: "POST /v1/feedback for user feedback"
+    status: complete
+    completed_date: "2026-01-09"
+    
+  - id: S5.6
+    title: "API tests"
+    description: "Integration tests for all endpoints (122 total tests passing)"
+    status: complete
+    completed_date: "2026-01-09"
+
+deliverables:
+  - api/__init__.py
+  - api/routes/chat.py
+  - api/routes/agents.py
+  - api/routes/decisions.py
+  - api/routes/feedback.py
+  - tests/test_api.py

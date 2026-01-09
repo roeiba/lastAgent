@@ -1,0 +1,41 @@
+# Sprint v2.0 - Council & Selection
+# Status: COMPLETE
+version: "v2.0"
+name: "Council & Selection"
+status: complete
+completed_date: "2026-01-09"
+progress: 100
+duration: "2 weeks"
+
+stories:
+  - id: S2.1
+    title: "Task analyzer module"
+    description: "Regex-based capability detection, task type classification"
+    status: complete
+    completed_date: "2026-01-09"
+    
+  - id: S2.2
+    title: "Agent matcher module"
+    description: "Score agents based on capability overlap and task preferences"
+    status: complete
+    completed_date: "2026-01-09"
+    
+  - id: S2.3
+    title: "Council selector module"
+    description: "3-stage LLM council (votes, rankings, chairman synthesis)"
+    status: complete
+    completed_date: "2026-01-09"
+    
+  - id: S2.4
+    title: "Integration tests"
+    description: "Unit tests for all selection modules (63 total tests passing)"
+    status: complete
+    completed_date: "2026-01-09"
+
+deliverables:
+  - src/task_analyzer.py
+  - src/agent_matcher.py
+  - src/council_selector.py
+  - tests/test_task_analyzer.py
+  - tests/test_agent_matcher.py
+  - tests/test_council_selector.py
