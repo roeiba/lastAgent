@@ -64,6 +64,7 @@ vision:
 
   core_principles:
     - "FULL-MESH: Any agent can call any other agent"
+    - "AGENT AWARENESS: Each agent knows all peer agents and their capabilities"
     - "DYNAMIC SELECTION: LLM council chooses best agent per task"
     - "DIRECT EXECUTION: Selected agent receives exact original prompts"
     - "OPTIONAL APPROVAL: User can enable/disable approval before execution"
@@ -100,12 +101,14 @@ workflow:
       NO wrapper, NO modification - direct API call
       
   step_5:
-    name: "Full-Mesh Collaboration"
+    name: "Full-Mesh Communication"
     description: |
-      If agent needs help, it calls other agents:
-      - Claude calls Aider for git operations
-      - Aider calls Gemini for research
-      - Any agent calls any other as needed
+      Agents are configured with awareness of all peer agents and their capabilities.
+      When an agent needs help, it intelligently delegates to the most suitable peer:
+      - Claude delegates git operations to Aider
+      - Aider delegates research to Gemini
+      - Any agent can discover and call any other based on capability matching
+      This creates a collaborative mesh where agents leverage each other's strengths.
       
   step_6:
     name: "Decision Logging"
@@ -190,10 +193,12 @@ api:
 # =============================================================================
 success_criteria:
   - "Any agent can call any other agent (full-mesh)"
+  - "Each agent knows all peer agents and their capabilities (agent awareness)"
   - "Council dynamically selects best agent per task"
   - "Selected agent receives exact original prompts"
   - "Optional approval mode configurable by user"
   - "All decisions logged for audit"
+  - "Enterprise E2E logging with trace correlation for debugging"
 
 # =============================================================================
 # IMPLEMENTATION STATUS (as of 2026-01-09)

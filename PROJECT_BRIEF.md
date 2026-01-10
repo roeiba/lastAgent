@@ -18,9 +18,11 @@ LastAgent combines llmCouncil, agentsParliament, superAI, and seedGPT into one u
 - AGENTS have agentic capabilities (tools, file access, autonomous execution)
 - Examples: `claude -p prompt`, `aider --message`, `codex --full-auto`, `goose run`
 
-### Phase 3: Communication
-- Selected **AGENT** runs via its native CLI
-- The agent can call other agents via CLI commands
+### Phase 3: Communication (Full-Mesh Awareness)
+- Each **AGENT** is configured with knowledge of all other agents and their capabilities
+- When correctly configured, agents can discover and delegate tasks to the most suitable peer
+- Example: Claude delegates git operations to Aider, Aider delegates research to Gemini
+- This creates a collaborative mesh where agents leverage each other's strengths
 
 **The council uses LLM for SELECTION. Execution is ALWAYS CLI.**
 

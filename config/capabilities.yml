@@ -1,0 +1,169 @@
+# ╔═══════════════════════════════════════════════════════════════════════════╗
+# ║                  LastAgent - Capability Registry                            ║
+# ╚═══════════════════════════════════════════════════════════════════════════╝
+# Consolidated capability definitions for intelligent agent delegation.
+# Used by AgentAwarenessBuilder to route tasks to optimal agents.
+
+version: "1.0"
+
+# =============================================================================
+# CAPABILITY-TO-AGENT MAPPING
+# =============================================================================
+# Maps capabilities to the agents that can handle them (ordered by proficiency)
+
+capability_agents:
+  # Reasoning & Analysis
+  deep_reasoning:
+    best: ["claude", "gemini"]
+    description: "Complex logical analysis and problem solving"
+    
+  analysis:
+    best: ["claude", "gemini"]
+    description: "Data analysis and evaluation"
+    
+  # Coding & Development
+  coding:
+    best: ["claude", "aider", "codex"]
+    description: "Writing and reviewing code"
+    
+  code_editing:
+    best: ["aider", "claude"]
+    description: "Modifying existing code files"
+    
+  refactoring:
+    best: ["aider", "claude"]
+    description: "Restructuring code for maintainability"
+    
+  # Git & Version Control
+  git_integration:
+    best: ["aider"]
+    description: "Git operations with automatic commits"
+    
+  auto_commits:
+    best: ["aider"]
+    description: "Automatic git commit generation"
+    
+  # Research & Information
+  research:
+    best: ["gemini", "claude"]
+    description: "Finding and synthesizing information"
+    
+  search_grounding:
+    best: ["gemini"]
+    description: "Real-time web search for current information"
+    
+  # File Operations
+  file_operations:
+    best: ["claude", "gemini", "aider"]
+    description: "Reading, writing, and manipulating files"
+    
+  # Execution & Automation
+  sandboxed_execution:
+    best: ["codex"]
+    description: "Running code in isolated environments"
+    
+  shell_commands:
+    best: ["codex", "goose"]
+    description: "Executing shell commands"
+    
+  autonomous_coding:
+    best: ["codex", "goose"]
+    description: "Autonomous code generation and editing"
+    
+  multistep_workflows:
+    best: ["goose"]
+    description: "Complex multi-step task automation"
+    
+  autonomous_tasks:
+    best: ["goose", "codex"]
+    description: "Fully autonomous task completion"
+    
+  recipes:
+    best: ["goose"]
+    description: "Pre-defined workflow recipes"
+    
+  # Multimodal
+  multimodal:
+    best: ["gemini"]
+    description: "Processing images, video, and audio"
+    
+  # Context
+  long_context:
+    best: ["claude", "gemini"]
+    description: "Handling very long documents or contexts"
+    
+  ultra_long_context:
+    best: ["gemini"]
+    description: "1M+ token context handling"
+
+# =============================================================================
+# TASK TYPE ROUTING
+# =============================================================================
+# Default agent recommendations by task type
+
+task_routing:
+  coding:
+    primary: "claude"
+    alternatives: ["aider", "codex"]
+    
+  git_operations:
+    primary: "aider"
+    alternatives: []
+    
+  research:
+    primary: "gemini"
+    alternatives: ["claude"]
+    
+  code_editing:
+    primary: "aider"
+    alternatives: ["claude"]
+    
+  autonomous_execution:
+    primary: "codex"
+    alternatives: ["goose"]
+    
+  multi_step_workflow:
+    primary: "goose"
+    alternatives: ["codex"]
+    
+  analysis:
+    primary: "claude"
+    alternatives: ["gemini"]
+    
+  multimodal:
+    primary: "gemini"
+    alternatives: []
+
+# =============================================================================
+# DELEGATION RULES
+# =============================================================================
+# Rules for when to delegate vs handle locally
+
+delegation_rules:
+  # Always delegate these capabilities to specialists
+  always_delegate:
+    - capability: "git_integration"
+      to: "aider"
+      reason: "Aider has native git integration with auto-commits"
+      
+    - capability: "search_grounding"
+      to: "gemini"
+      reason: "Only Gemini has Google Search grounding"
+      
+    - capability: "sandboxed_execution"
+      to: "codex"
+      reason: "Codex provides secure sandboxed execution"
+      
+    - capability: "recipes"
+      to: "goose"
+      reason: "Goose has the recipe system"
+      
+  # Never delegate these (keep locally)
+  never_delegate:
+    - "tool_use"  # All agents have their own tools
+    
+  # Delegation depth limits
+  max_depth: 3
+  
+  # Prevent cycles
+  prevent_cycles: true

@@ -206,6 +206,42 @@ agentsParliament:
         elif agent_name == "goose":
             return await goose_run(instructions=user_prompt, working_directory=working_dir)
 
+  # -------------------------------------------------------------------------
+  # Agent Awareness Configuration (Full-Mesh Communication)
+  # -------------------------------------------------------------------------
+  # Each agent is configured with knowledge of all peer agents and their
+  # capabilities. This enables intelligent inter-agent delegation.
+  
+  agent_awareness_config: |
+    # Configuration injected into each agent's system prompt
+    AGENT_AWARENESS_TEMPLATE = """
+    You are part of a collaborative agent mesh. When you need specialized help,
+    you can delegate tasks to the most suitable peer agent.
+    
+    Available Agents and Their Capabilities:
+    {agent_capabilities}
+    
+    Delegation Guidelines:
+    - Delegate git/code editing tasks to Aider
+    - Delegate real-time information or search to Gemini (has Google Search grounding)
+    - Delegate sandboxed execution to Codex
+    - Delegate multi-step autonomous workflows to Goose
+    - Delegate deep reasoning or long-context tasks to Claude
+    
+    To delegate, output: DELEGATE_TO: <agent_name> | TASK: <task_description>
+    """
+    
+    def build_agent_system_prompt(agent_name: str, agents_config: dict) -> str:
+        """Build system prompt with awareness of all peer agents."""
+        other_agents = {k: v for k, v in agents_config.items() if k != agent_name}
+        
+        capabilities_text = "\n".join([
+            f"- {name}: {agent['strengths']}"
+            for name, agent in other_agents.items()
+        ])
+        
+        return AGENT_AWARENESS_TEMPLATE.format(agent_capabilities=capabilities_text)
+
 # =============================================================================
 # 3. SuperAI INTEGRATION
 # =============================================================================

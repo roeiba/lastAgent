@@ -60,7 +60,8 @@ stories:
   - id: S7.7
     title: "Git commit and push"
     description: "Commit all changes and push to GitHub"
-    status: in_progress
+    status: complete
+    completed_date: "2026-01-10"
 
 deliverables:
   - Dockerfile

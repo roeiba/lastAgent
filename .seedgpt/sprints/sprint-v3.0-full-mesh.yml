@@ -1,7 +1,7 @@
-# Sprint v3.0 - Full-Mesh Execution
+# Sprint v3.0 - Full-Mesh Execution & Communication
 # Status: COMPLETE
 version: "v3.0"
-name: "Full-Mesh Execution"
+name: "Full-Mesh Execution & Communication"
 status: complete
 completed_date: "2026-01-09"
 progress: 100
@@ -21,13 +21,28 @@ stories:
     completed_date: "2026-01-09"
     
   - id: S3.3
+    title: "Agent awareness configuration"
+    description: "Configure each agent with knowledge of all peer agents and their capabilities"
+    status: complete
+    completed_date: "2026-01-09"
+    
+  - id: S3.4
+    title: "Capability registry"
+    description: "Registry for peer discovery and intelligent delegation routing"
+    status: complete
+    completed_date: "2026-01-09"
+    
+  - id: S3.5
     title: "Integration tests"
-    description: "Unit tests for executor and mesh (84 total tests passing)"
+    description: "Unit tests for executor, mesh, and awareness (84 total tests passing)"
     status: complete
     completed_date: "2026-01-09"
 
 deliverables:
   - src/executor.py
   - src/mesh.py
+  - src/agent_awareness.py
+  - config/capabilities.yml
   - tests/test_executor.py
   - tests/test_mesh.py
+  - tests/test_awareness.py

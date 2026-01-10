@@ -1,0 +1,188 @@
+# Sprint v8.0 - Enterprise Observability & E2E Logging
+# Status: COMPLETE
+version: "v8.0"
+name: "Enterprise Observability & E2E Logging"
+status: complete
+completed_date: "2026-01-10"
+progress: 100
+duration: "1 week"
+
+# =============================================================================
+# SPRINT GOAL
+# =============================================================================
+# Enterprise-grade end-to-end logging that makes it easy to debug and understand
+# failures across the full agent mesh. Every request should be traceable from
+# user input through council selection, agent execution, delegations, and response.
+
+stories:
+  - id: S8.1
+    title: "Structured logging framework"
+    description: |
+      Implement JSON-structured logging with:
+      - Trace ID (unique per user request)
+      - Span ID (unique per agent execution)
+      - Parent Span ID (for delegation chains)
+      - Timestamp, level, component, message
+    status: complete
+    completed_date: "2026-01-10"
+    priority: high
+    acceptance_criteria:
+      - All log entries are JSON-formatted
+      - Trace ID propagates through full request lifecycle
+      - Span IDs create parent-child tree for delegations
+    
+  - id: S8.2
+    title: "Request/response correlation"
+    description: |
+      Capture and correlate all request/response pairs:
+      - User request → Council selection
+      - Council selection → Agent execution
+      - Agent execution → Delegation (if any)
+      - Full response chain back to user
+    status: complete
+    completed_date: "2026-01-10"
+    priority: high
+    acceptance_criteria:
+      - Every API request has traceable execution path
+      - Response time breakdown by phase
+      - Payload capture (sanitized for sensitive data)
+    
+  - id: S8.3
+    title: "Agent execution timeline"
+    description: |
+      Visual timeline showing:
+      - Council voting phase (which LLMs voted, what they said)
+      - Agent selection decision
+      - Execution start/end with duration
+      - Any delegations and their sub-timelines
+    status: complete
+    completed_date: "2026-01-10"
+    priority: medium
+    acceptance_criteria:
+      - Timeline exportable as JSON
+      - Human-readable format for debugging
+      - Includes decision reasoning at each step
+
+  - id: S8.4
+    title: "Error tracking and root cause analysis"
+    description: |
+      When errors occur:
+      - Capture full execution context
+      - Identify which agent/phase failed
+      - Preserve delegation chain leading to failure
+      - Classify error type (timeout, API error, validation, etc.)
+    status: complete
+    completed_date: "2026-01-10"
+    priority: high
+    acceptance_criteria:
+      - Errors include full trace context
+      - Error classification is automatic
+      - Root cause is identifiable without manual log searching
+
+  - id: S8.5
+    title: "OpenTelemetry integration"
+    description: |
+      Integrate with OpenTelemetry for:
+      - Distributed tracing export
+      - Span creation/propagation
+      - Metrics collection (latency, error rate, throughput)
+    status: complete
+    completed_date: "2026-01-10"
+    priority: medium
+    acceptance_criteria:
+      - Traces exportable to Jaeger/Zipkin
+      - Metrics exportable to Prometheus
+      - Standard OTLP protocol support
+
+  - id: S8.6
+    title: "Debug mode and log levels"
+    description: |
+      Configurable logging verbosity:
+      - ERROR: Only failures
+      - WARN: Failures + potential issues
+      - INFO: Normal operation summary
+      - DEBUG: Full request/response details
+      - TRACE: Everything including internal state
+    status: complete
+    completed_date: "2026-01-10"
+    priority: medium
+    acceptance_criteria:
+      - Log level configurable via env var
+      - DEBUG mode includes full payloads
+      - TRACE mode includes agent internal reasoning
+
+  - id: S8.7
+    title: "Unit tests for observability"
+    description: "Tests for logging, tracing, and error tracking modules"
+    status: complete
+    completed_date: "2026-01-10"
+    priority: high
+    acceptance_criteria:
+      - All logging functions have unit tests
+      - Trace propagation is tested
+      - Error classification is tested
+
+deliverables:
+  - src/observability/__init__.py
+  - src/observability/logger.py
+  - src/observability/tracer.py
+  - src/observability/timeline.py
+  - src/observability/error_tracker.py
+  - src/observability/otel_exporter.py
+  - config/logging.yml
+  - tests/test_observability.py
+
+# =============================================================================
+# LOGGING FORMAT EXAMPLE
+# =============================================================================
+logging_format_example: |
+  {
+    "timestamp": "2026-01-10T19:45:00.123Z",
+    "level": "INFO",
+    "trace_id": "abc123-def456-ghi789",
+    "span_id": "span-001",
+    "parent_span_id": null,
+    "component": "council_selector",
+    "phase": "SELECTION",
+    "agent": null,
+    "message": "Council voting started",
+    "data": {
+      "task_preview": "Write a Python function to...",
+      "available_agents": ["claude", "gemini", "aider", "codex", "goose"],
+      "council_models": ["gpt-5.1", "gemini-3-pro", "claude-4-opus"]
+    },
+    "duration_ms": null
+  }
+
+# =============================================================================
+# ERROR LOG EXAMPLE
+# =============================================================================
+error_log_example: |
+  {
+    "timestamp": "2026-01-10T19:45:05.456Z",
+    "level": "ERROR",
+    "trace_id": "abc123-def456-ghi789",
+    "span_id": "span-003",
+    "parent_span_id": "span-002",
+    "component": "executor",
+    "phase": "EXECUTION",
+    "agent": "aider",
+    "message": "Agent execution failed",
+    "error": {
+      "type": "TimeoutError",
+      "message": "Agent did not respond within 30s",
+      "classification": "TIMEOUT",
+      "recoverable": true
+    },
+    "execution_context": {
+      "task": "Refactor auth module",
+      "working_directory": "/project/src",
+      "delegation_depth": 1,
+      "parent_agent": "claude"
+    },
+    "timeline": [
+      {"phase": "SELECTION", "agent": "council", "duration_ms": 1200, "status": "success"},
+      {"phase": "EXECUTION", "agent": "claude", "duration_ms": 3500, "status": "success"},
+      {"phase": "DELEGATION", "agent": "aider", "duration_ms": 30000, "status": "timeout"}
+    ]
+  }
