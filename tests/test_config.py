@@ -1,5 +1,5 @@
 """
-Tests for GodAgent Configuration Loader
+Tests for LastAgent Configuration Loader
 """
 
 import pytest

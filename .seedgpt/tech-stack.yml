@@ -1,5 +1,5 @@
 # ╔═══════════════════════════════════════════════════════════════════════════╗
-# ║                      GodAgent - Technology Stack                           ║
+# ║                      LastAgent - Technology Stack                           ║
 # ╚═══════════════════════════════════════════════════════════════════════════╝
 version: "1.0"
 
@@ -22,7 +22,7 @@ version: "1.0"
 # =============================================================================
 #
 #  ┌────────────────────────────────────────────────────────────────────────┐
-#  │                      GodAgent (This Project)                           │
+#  │                      LastAgent (This Project)                           │
 #  │                 Orchestrator + Entry Point                              │
 #  ├────────────────────────────────────────────────────────────────────────┤
 #  │                                                                        │
@@ -38,7 +38,7 @@ version: "1.0"
 # =============================================================================
 # UNDERLYING PROJECTS (Runtime Dependencies)
 # =============================================================================
-# GodAgent uses these projects to provision and setup the agent mesh.
+# LastAgent uses these projects to provision and setup the agent mesh.
 # This keeps all projects active and avoids code duplication.
 
 underlying_projects:
@@ -82,12 +82,12 @@ underlying_projects:
       - "AgentOrchestrationService"
     usage: "Import decision logging and approval modules"
     features_to_add:
-      - "GodAgent-specific decision types"
+      - "LastAgent-specific decision types"
 
 # =============================================================================
-# GODAGENT OWN CODE (This Project)
+# LastAgent OWN CODE (This Project)
 # =============================================================================
-godagent_components:
+lastagent_components:
   orchestrator:
     description: "Main entry point, coordinates all underlying projects"
     responsibilities:
@@ -122,7 +122,7 @@ godagent_components:
 #      │
 #      ▼
 #  ┌─────────────────────────────────────────────────────────────────┐
-#  │                     GodAgent Orchestrator                        │
+#  │                     LastAgent Orchestrator                        │
 #  └─────────────────────────────────────────────────────────────────┘
 #      │
 #      ├──────────────────────┬──────────────────────┬───────────────┐
@@ -160,8 +160,8 @@ dependencies:
 # FOLDER STRUCTURE
 # =============================================================================
 folder_structure:
-  godAgent/:
-    - src/: "GodAgent orchestrator code"
+  lastAgent/:
+    - src/: "LastAgent orchestrator code"
     - config/: "Agent registry, council config"
     - api/: "FastAPI endpoints"
     - cli/: "Optional CLI"

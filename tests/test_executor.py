@@ -1,5 +1,5 @@
 """
-Tests for GodAgent Agent Executor
+Tests for LastAgent Agent Executor
 
 CRITICAL: Agents are NOT LLMs. All execution is via CLI subprocess.
 """

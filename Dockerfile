@@ -1,4 +1,4 @@
-# GodAgent Docker Image
+# LastAgent Docker Image
 FROM python:3.11-slim
 
 WORKDIR /app
@@ -19,8 +19,8 @@ RUN pip install --no-cache-dir -e .
 COPY . .
 
 # Create non-root user
-RUN useradd -m godagent && chown -R godagent:godagent /app
-USER godagent
+RUN useradd -m lastagent && chown -R lastagent:lastagent /app
+USER lastagent
 
 # Expose API port
 EXPOSE 8000

@@ -1,5 +1,5 @@
 """
-Tests for GodAgent Mesh Coordinator
+Tests for LastAgent Mesh Coordinator
 """
 
 import pytest

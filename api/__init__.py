@@ -1,5 +1,5 @@
 """
-GodAgent API - Main FastAPI Application
+LastAgent API - Main FastAPI Application
 
 OpenAI-compatible API endpoints for task submission and agent management.
 """
@@ -15,14 +15,14 @@ from .routes import chat, agents, decisions, feedback
 async def lifespan(app: FastAPI):
     """Handle startup and shutdown events."""
     # Startup
-    print("🚀 GodAgent API starting up...")
+    print("🚀 LastAgent API starting up...")
     yield
     # Shutdown
-    print("👋 GodAgent API shutting down...")
+    print("👋 LastAgent API shutting down...")
 
 
 app = FastAPI(
-    title="GodAgent API",
+    title="LastAgent API",
     description="Full-mesh AI orchestration system - One Agent to Rule Them All",
     version="0.1.0",
     lifespan=lifespan,
@@ -48,7 +48,7 @@ app.include_router(feedback.router, prefix="/v1", tags=["feedback"])
 async def root():
     """Root endpoint with API info."""
     return {
-        "name": "GodAgent API",
+        "name": "LastAgent API",
         "version": "0.1.0",
         "description": "Full-mesh AI orchestration system",
         "endpoints": {

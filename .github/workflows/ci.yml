@@ -62,7 +62,7 @@ jobs:
         with:
           context: .
           push: false
-          tags: godagent:latest
+          tags: lastagent:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
           
@@ -76,5 +76,5 @@ jobs:
   #   steps:
   #     - uses: google-github-actions/deploy-cloudrun@v2
   #       with:
-  #         service: godagent-api
-  #         image: gcr.io/${{ secrets.GCP_PROJECT }}/godagent:${{ github.sha }}
+  #         service: lastagent-api
+  #         image: gcr.io/${{ secrets.GCP_PROJECT }}/lastagent:${{ github.sha }}

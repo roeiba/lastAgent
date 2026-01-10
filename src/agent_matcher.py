@@ -1,5 +1,5 @@
 """
-GodAgent Agent Matcher
+LastAgent Agent Matcher
 
 Matches task requirements to agent capabilities to produce a ranked list
 of suitable agents for the council to consider.

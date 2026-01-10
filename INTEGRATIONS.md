@@ -1,10 +1,10 @@
-# Integration Guide: GodAgent with Dependent Projects
+# Integration Guide: LastAgent with Dependent Projects
 
-This guide shows how to integrate GodAgent with its underlying projects.
+This guide shows how to integrate LastAgent with its underlying projects.
 
 ## Project Dependencies
 
-GodAgent uses these projects as runtime dependencies:
+LastAgent uses these projects as runtime dependencies:
 - **llmCouncil** - OpenRouter access, council voting
 - **agentsParliament** - MCP servers for agent execution
 - **SuperAI** - Response evaluation, LLM-as-judge
@@ -15,7 +15,7 @@ GodAgent uses these projects as runtime dependencies:
 ### 1. Using llmCouncil for OpenRouter Access
 
 ```python
-# In godAgent/src/council_selector.py
+# In lastAgent/src/council_selector.py
 import sys
 sys.path.insert(0, "/path/to/llmCouncil/backend")
 
@@ -36,7 +36,7 @@ result = await run_full_council(prompt, council_config)
 ### 2. Using agentsParliament MCP Servers
 
 ```python
-# In godAgent/src/executor.py
+# In lastAgent/src/executor.py
 import sys
 sys.path.insert(0, "/path/to/agentsParliament/src")
 
@@ -60,7 +60,7 @@ response = await run_aider(
 ### 3. Using SuperAI for Evaluation
 
 ```python
-# In godAgent/src/orchestrator.py
+# In lastAgent/src/orchestrator.py
 import sys
 sys.path.insert(0, "/path/to/SuperAI/src")
 
@@ -82,15 +82,15 @@ best = await compare_responses(
 ### 4. Using seedGPT Decision Patterns
 
 ```python
-# In godAgent/src/decision_log.py
+# In lastAgent/src/decision_log.py
 import sys
 sys.path.insert(0, "/path/to/seedGPT")
 
 from seedpy.core.decision_logger import DecisionLogger
 from seedpy.core.workflow import WorkflowManager
 
-# Log a GodAgent decision
-logger = DecisionLogger(project_id="godagent")
+# Log a LastAgent decision
+logger = DecisionLogger(project_id="lastagent")
 logger.log_decision(
     decision_type="AGENT_SELECTION",
     title="Selected Claude for coding task",
@@ -103,7 +103,7 @@ logger.log_decision(
 
 ```
 AgenticCompany/
-├── godAgent/           # This project
+├── lastAgent/           # This project
 ├── llm-council/        # OpenRouter + council voting
 ├── agents-parliament/  # MCP servers for agents
 ├── SuperAI/            # LLM evaluation
@@ -117,7 +117,7 @@ User Request
      │
      ▼
 ┌─────────────────┐
-│    GodAgent     │
+│    LastAgent     │
 │  orchestrator   │
 └────────┬────────┘
          │

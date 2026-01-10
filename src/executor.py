@@ -1,5 +1,5 @@
 """
-GodAgent Agent Executor
+LastAgent Agent Executor
 
 Executes agents via their native CLI/SDK.
 AGENTS ARE NOT LLMs - they have agentic capabilities (tools, file access, execution).

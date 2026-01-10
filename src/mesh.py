@@ -1,5 +1,5 @@
 """
-GodAgent Mesh Coordinator
+LastAgent Mesh Coordinator
 
 Manages the full-mesh agent network where any agent can delegate to any other.
 

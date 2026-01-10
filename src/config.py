@@ -1,5 +1,5 @@
 """
-GodAgent Configuration Loader
+LastAgent Configuration Loader
 
 Loads and validates configuration from YAML files.
 Provides easy access to agent registry, council config, and settings.
@@ -56,7 +56,7 @@ class CouncilConfig(BaseModel):
 
 
 class Settings(BaseModel):
-    """General GodAgent settings."""
+    """General LastAgent settings."""
     approval: Dict[str, Any] = Field(default_factory=dict)
     logging: Dict[str, Any] = Field(default_factory=dict)
     api: Dict[str, Any] = Field(default_factory=dict)
@@ -71,7 +71,7 @@ class Settings(BaseModel):
 
 class ConfigLoader:
     """
-    Loads and manages GodAgent configuration.
+    Loads and manages LastAgent configuration.
     
     Usage:
         config = ConfigLoader()

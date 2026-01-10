@@ -1,5 +1,5 @@
 """
-Tests for GodAgent Human Controls (approvals, decision logging, feedback)
+Tests for LastAgent Human Controls (approvals, decision logging, feedback)
 """
 
 import pytest
@@ -114,11 +114,11 @@ class TestDecisionLogger:
     
     @pytest.fixture
     def logger(self):
-        return DecisionLogger(agent_type="godagent")
+        return DecisionLogger(agent_type="lastagent")
     
     def test_initialization(self, logger):
         """Test logger initializes correctly."""
-        assert logger.agent_type == "godagent"
+        assert logger.agent_type == "lastagent"
         
     def test_log_decision(self, logger):
         """Test logging a decision."""

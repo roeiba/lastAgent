@@ -1,1 +1,1 @@
-# GodAgent Configuration
+# LastAgent Configuration

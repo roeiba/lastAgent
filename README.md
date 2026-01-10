@@ -1,4 +1,4 @@
-# 🤖 GodAgent
+# 🤖 LastAgent
 
 **One Agent to Rule Them All** - Full-mesh AI orchestration system that dynamically selects and executes the best AI agent for any task.
 
@@ -23,10 +23,10 @@ export GOOGLE_API_KEY="your-key"
 export OPENROUTER_API_KEY="your-key"
 
 # Start the API server
-godagent server --port 8000
+lastagent server --port 8000
 
 # Or submit a task directly
-godagent chat "Write a Python function to calculate fibonacci numbers"
+lastagent chat "Write a Python function to calculate fibonacci numbers"
 ```
 
 ## Architecture
@@ -63,11 +63,11 @@ GET  /health               - Health check
 ## CLI Commands
 
 ```bash
-godagent chat "prompt"       # Submit a task
-godagent agents              # List agents
-godagent agents -c coding    # Filter by capability
-godagent server              # Start API server
-godagent workflow status     # Check workflow status
+lastagent chat "prompt"       # Submit a task
+lastagent agents              # List agents
+lastagent agents -c coding    # Filter by capability
+lastagent server              # Start API server
+lastagent workflow status     # Check workflow status
 ```
 
 ## Configuration

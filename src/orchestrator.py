@@ -1,5 +1,5 @@
 """
-GodAgent Orchestrator
+LastAgent Orchestrator
 
 ARCHITECTURE:
 =============
@@ -65,7 +65,7 @@ class TaskStatus(Enum):
 
 @dataclass
 class Task:
-    """Represents a task submitted to GodAgent."""
+    """Represents a task submitted to LastAgent."""
     id: str
     system_prompt: str
     user_prompt: str
@@ -117,7 +117,7 @@ class Decision:
 
 class Orchestrator:
     """
-    Main GodAgent orchestrator - coordinates SELECTION and EXECUTION.
+    Main LastAgent orchestrator - coordinates SELECTION and EXECUTION.
     
     Architecture:
     - Phase 1: Council of LLMs SELECTS which agent to use
@@ -137,7 +137,7 @@ class Orchestrator:
     def __init__(self):
         """Initialize the orchestrator."""
         self.config = get_config()
-        self.logger = logging.getLogger("godagent.orchestrator")
+        self.logger = logging.getLogger("lastagent.orchestrator")
         
         # Internal state
         self._tasks: Dict[str, Task] = {}
@@ -158,7 +158,7 @@ class Orchestrator:
         approval_mode: Optional[ApprovalMode] = None,
     ) -> ExecutionResult:
         """
-        Process a task through the full GodAgent pipeline.
+        Process a task through the full LastAgent pipeline.
         
         Args:
             system_prompt: System prompt for the task

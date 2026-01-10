@@ -1,7 +1,7 @@
 """
-GodAgent Agile TDD Workflow Runner
+LastAgent Agile TDD Workflow Runner
 
-Implements the 9-phase Agile TDD workflow for GodAgent.
+Implements the 9-phase Agile TDD workflow for LastAgent.
 Integrates with seedGPT workflow patterns.
 """
 

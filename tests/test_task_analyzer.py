@@ -1,5 +1,5 @@
 """
-Tests for GodAgent Task Analyzer
+Tests for LastAgent Task Analyzer
 """
 
 import pytest

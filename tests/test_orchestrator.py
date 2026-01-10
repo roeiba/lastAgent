@@ -1,5 +1,5 @@
 """
-Tests for GodAgent Orchestrator
+Tests for LastAgent Orchestrator
 """
 
 import pytest

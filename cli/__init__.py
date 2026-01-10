@@ -1,7 +1,7 @@
 """
-GodAgent CLI
+LastAgent CLI
 
-Command-line interface for GodAgent operations.
+Command-line interface for LastAgent operations.
 """
 
 import argparse
@@ -16,14 +16,14 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 def main():
     """Main CLI entry point."""
     parser = argparse.ArgumentParser(
-        prog="godagent",
-        description="GodAgent - Full-mesh AI orchestration system",
+        prog="lastagent",
+        description="LastAgent - Full-mesh AI orchestration system",
     )
     
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
     
     # Chat command
-    chat_parser = subparsers.add_parser("chat", help="Submit a task to GodAgent")
+    chat_parser = subparsers.add_parser("chat", help="Submit a task to LastAgent")
     chat_parser.add_argument("prompt", help="The prompt/task to execute")
     chat_parser.add_argument(
         "-s", "--system", default="", help="System prompt"
@@ -79,7 +79,7 @@ async def run_chat(args):
     """Run a chat/task."""
     from src.orchestrator import get_orchestrator
     
-    print(f"🤖 GodAgent processing task...")
+    print(f"🤖 LastAgent processing task...")
     
     orchestrator = get_orchestrator()
     result = await orchestrator.process_task(
@@ -116,7 +116,7 @@ def run_server(args):
     """Run the API server."""
     import uvicorn
     
-    print(f"🚀 Starting GodAgent API server on {args.host}:{args.port}")
+    print(f"🚀 Starting LastAgent API server on {args.host}:{args.port}")
     uvicorn.run(
         "api:app",
         host=args.host,

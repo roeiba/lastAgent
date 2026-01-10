@@ -1,5 +1,5 @@
 """
-GodAgent Task Analyzer
+LastAgent Task Analyzer
 
 Analyzes incoming tasks to determine their requirements and characteristics.
 This helps the council select the most appropriate agent.

@@ -68,7 +68,7 @@ class ChatCompletionResponse(BaseModel):
     model: str
     choices: List[Choice]
     usage: Usage
-    godagent_metadata: Optional[Dict[str, Any]] = None
+    lastagent_metadata: Optional[Dict[str, Any]] = None
 
 
 # =============================================================================
@@ -80,7 +80,7 @@ async def create_chat_completion(request: ChatCompletionRequest):
     """
     Create a chat completion.
     
-    This is the main endpoint for task submission. GodAgent will:
+    This is the main endpoint for task submission. LastAgent will:
     1. Analyze the task
     2. Select the best agent via council
     3. Execute the agent with the original prompts
@@ -143,7 +143,7 @@ async def create_chat_completion(request: ChatCompletionRequest):
             completion_tokens=len(result.response.split()),
             total_tokens=len(user_prompt.split()) + len(result.response.split()),
         ),
-        godagent_metadata={
+        lastagent_metadata={
             "task_id": result.task_id,
             "agent": result.agent,
             "duration_ms": result.duration_ms,

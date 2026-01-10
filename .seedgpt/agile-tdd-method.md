@@ -1,6 +1,6 @@
 > **⚠️ CRITICAL: AGENT vs LLM DISTINCTION**
 >
-> GodAgent is an **AGENT ROUTER** that invokes AGENTS via their native **CLI/SDK**.
+> LastAgent is an **AGENT ROUTER** that invokes AGENTS via their native **CLI/SDK**.
 > **AGENTS ARE NOT LLMs.** They have agentic capabilities (tools, file access, execution).
 > Examples: `claude -p prompt`, `gemini prompt "..."`, `aider --message "..."`
 > There are NO API fallbacks - CLI/SDK is the ONLY execution method.
@@ -44,7 +44,7 @@ When this file is referenced, it is expected that the reader will understand the
 
 when auto-mode is used, Do not ask the user questions, and decide everything autonomously.
 
-YOU ARE AND AGENT, and you will be solving the tasks. IT DOES NOT take human hours to solve the tasks, it takes AI to solve the tasks, and usually done in minutes. so lets put all the time calculations a side and just say easy/hard/medium etc.
+YOU ARE AN AGENT of seedgpt, and it is you who will be solving the tasks. IT DOES NOT take human hours to solve the tasks, it takes AI to solve the tasks, and usually done in minutes. so lets put all the time calculations a side and just say easy/hard/medium etc.
 
 At the end of each operations/call/task - also update roadmap and PRD to the current progress and state of the project.
 

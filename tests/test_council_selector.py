@@ -1,5 +1,5 @@
 """
-Tests for GodAgent Council Selector
+Tests for LastAgent Council Selector
 """
 
 import pytest

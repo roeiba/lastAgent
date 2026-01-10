@@ -1,5 +1,5 @@
 # ╔═══════════════════════════════════════════════════════════════════════════╗
-# ║                    GodAgent - Product Requirements Document               ║
+# ║                    LastAgent - Product Requirements Document               ║
 # ║                    "One Agent to Rule Them All"                           ║
 # ╚═══════════════════════════════════════════════════════════════════════════╝
 version: "1.0"
@@ -26,7 +26,7 @@ completed_date: "2026-01-09"
 # =============================================================================
 vision:
   summary: |
-    GodAgent is a full-mesh AI orchestration system where any agent can call any other agent.
+    LastAgent is a full-mesh AI orchestration system where any agent can call any other agent.
     An LLM council dynamically SELECTS the best agent, then that agent EXECUTES via CLI.
 
   architecture_diagram: |
@@ -74,7 +74,7 @@ vision:
 workflow:
   step_1:
     name: "Task Submission"
-    description: "User submits system_prompt + user_prompt to GodAgent"
+    description: "User submits system_prompt + user_prompt to LastAgent"
     
   step_2:
     name: "Council Selection"

@@ -1,11 +1,11 @@
 version: '3.8'
 
 services:
-  godagent-api:
+  lastagent-api:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: godagent-api
+    container_name: lastagent-api
     ports:
       - "8000:8000"
     environment:
@@ -27,7 +27,7 @@ services:
   # Optional: Redis for caching/session management
   # redis:
   #   image: redis:7-alpine
-  #   container_name: godagent-redis
+  #   container_name: lastagent-redis
   #   ports:
   #     - "6379:6379"
   #   volumes:
@@ -38,4 +38,4 @@ services:
 
 networks:
   default:
-    name: godagent-network
+    name: lastagent-network

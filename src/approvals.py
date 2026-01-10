@@ -1,5 +1,5 @@
 """
-GodAgent Approval Workflow
+LastAgent Approval Workflow
 
 Manages human-in-the-loop approval for agent actions.
 Supports multiple approval modes:

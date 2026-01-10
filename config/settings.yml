@@ -1,7 +1,7 @@
 # ╔═══════════════════════════════════════════════════════════════════════════╗
-# ║                      GodAgent - Settings                                   ║
+# ║                      LastAgent - Settings                                   ║
 # ╚═══════════════════════════════════════════════════════════════════════════╝
-# General settings for the GodAgent orchestrator
+# General settings for the LastAgent orchestrator
 
 version: "1.0"
 
@@ -29,7 +29,7 @@ logging:
   
   # Log to file
   file_enabled: true
-  file_path: ".agents/godagent.log"
+  file_path: ".agents/lastagent.log"
   
   # Decision logging
   decision_logging:
@@ -55,7 +55,7 @@ api:
 # =============================================================================
 # UNDERLYING PROJECTS PATHS
 # =============================================================================
-# Relative paths from godAgent root
+# Relative paths from lastAgent root
 project_paths:
   llm_council: "../llm-council"
   agents_parliament: "../agents-parliament"

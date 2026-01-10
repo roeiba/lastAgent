@@ -1,5 +1,5 @@
 """
-GodAgent Feedback System
+LastAgent Feedback System
 
 Collects user feedback on agent responses and decisions.
 Used to improve agent selection and future performance.

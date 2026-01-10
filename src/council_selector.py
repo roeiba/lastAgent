@@ -1,9 +1,9 @@
 """
-GodAgent Council Selector
+LastAgent Council Selector
 
 ARCHITECTURE NOTE:
 ==================
-GodAgent has a two-phase architecture:
+LastAgent has a two-phase architecture:
 
 Phase 1 - SELECTION (this module):
   - Council of LLMs votes on which AGENT is best for the task

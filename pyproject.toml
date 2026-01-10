@@ -1,5 +1,5 @@
 [project]
-name = "godagent"
+name = "lastagent"
 version = "0.1.0"
 description = "Full-mesh AI orchestration system - One Agent to Rule Them All"
 readme = "PROJECT_BRIEF.md"
@@ -37,4 +37,4 @@ line-length = 100
 target-version = "py311"
 
 [project.scripts]
-godagent = "cli.__main__:main"
+lastagent = "cli.__main__:main"

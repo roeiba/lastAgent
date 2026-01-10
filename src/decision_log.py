@@ -1,7 +1,7 @@
 """
-GodAgent Decision Logger
+LastAgent Decision Logger
 
-Logs all decisions made by GodAgent for audit trail and analysis.
+Logs all decisions made by LastAgent for audit trail and analysis.
 Designed to integrate with seedGPT's decision logging patterns.
 """
 
@@ -15,7 +15,7 @@ import uuid
 
 class DecisionType(Enum):
     """Types of decisions that can be logged."""
-    # GodAgent-specific decision types
+    # LastAgent-specific decision types
     AGENT_SELECTION = "AGENT_SELECTION"
     AGENT_EXECUTION = "AGENT_EXECUTION"
     INTER_AGENT_CALL = "INTER_AGENT_CALL"
@@ -83,7 +83,7 @@ class DecisionLogger:
     Designed for integration with seedGPT's decision logging patterns.
     
     Usage:
-        logger = DecisionLogger(agent_type="godagent")
+        logger = DecisionLogger(agent_type="lastagent")
         
         decision_id = logger.log_decision(
             decision_type=DecisionType.AGENT_SELECTION,
@@ -108,7 +108,7 @@ class DecisionLogger:
     
     def __init__(
         self,
-        agent_type: str = "godagent",
+        agent_type: str = "lastagent",
         project_id: Optional[str] = None,
         persist_to_file: bool = False,
         file_path: Optional[str] = None,
@@ -319,7 +319,7 @@ class DecisionLogger:
 _decision_logger = None
 
 
-def get_decision_logger(agent_type: str = "godagent") -> DecisionLogger:
+def get_decision_logger(agent_type: str = "lastagent") -> DecisionLogger:
     """Get the global decision logger instance."""
     global _decision_logger
     if _decision_logger is None:

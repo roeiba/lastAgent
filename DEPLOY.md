@@ -1,4 +1,4 @@
-# GodAgent Deployment Guide
+# LastAgent Deployment Guide
 
 ## Quick Start
 
@@ -12,7 +12,7 @@ export ANTHROPIC_API_KEY="your-key"
 export GOOGLE_API_KEY="your-key"
 
 # Run API server
-godagent server --port 8000
+lastagent server --port 8000
 ```
 
 ### Docker
@@ -21,7 +21,7 @@ godagent server --port 8000
 docker-compose up -d
 
 # Check logs
-docker-compose logs -f godagent-api
+docker-compose logs -f lastagent-api
 
 # Stop
 docker-compose down
@@ -41,11 +41,11 @@ curl -X POST http://localhost:8000/v1/chat/completions \
 ### Google Cloud Run
 ```bash
 # Build and push
-gcloud builds submit --tag gcr.io/PROJECT_ID/godagent
+gcloud builds submit --tag gcr.io/PROJECT_ID/lastagent
 
 # Deploy
-gcloud run deploy godagent-api \
-  --image gcr.io/PROJECT_ID/godagent \
+gcloud run deploy lastagent-api \
+  --image gcr.io/PROJECT_ID/lastagent \
   --platform managed \
   --allow-unauthenticated \
   --set-env-vars "ANTHROPIC_API_KEY=xxx,GOOGLE_API_KEY=xxx"
@@ -55,9 +55,9 @@ gcloud run deploy godagent-api \
 ```bash
 # Push to ECR
 aws ecr get-login-password | docker login --username AWS --password-stdin ACCOUNT.dkr.ecr.REGION.amazonaws.com
-docker build -t godagent .
-docker tag godagent:latest ACCOUNT.dkr.ecr.REGION.amazonaws.com/godagent:latest
-docker push ACCOUNT.dkr.ecr.REGION.amazonaws.com/godagent:latest
+docker build -t lastagent .
+docker tag lastagent:latest ACCOUNT.dkr.ecr.REGION.amazonaws.com/lastagent:latest
+docker push ACCOUNT.dkr.ecr.REGION.amazonaws.com/lastagent:latest
 ```
 
 ## Environment Variables

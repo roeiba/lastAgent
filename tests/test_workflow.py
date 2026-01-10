@@ -1,5 +1,5 @@
 """
-Tests for GodAgent Workflow Runner
+Tests for LastAgent Workflow Runner
 """
 
 import pytest

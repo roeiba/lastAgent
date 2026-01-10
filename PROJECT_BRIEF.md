@@ -1,7 +1,7 @@
-# GodAgent - Project Brief
+# LastAgent - Project Brief
 
 ## Overview
-GodAgent combines llmCouncil, agentsParliament, superAI, and seedGPT into one unified orchestrator that allows users to interact with a "god agent" which controls all other agents.
+LastAgent combines llmCouncil, agentsParliament, superAI, and seedGPT into one unified orchestrator that allows users to interact with a "god agent" which controls all other agents.
 
 ---
 
