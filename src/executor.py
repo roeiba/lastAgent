@@ -279,15 +279,17 @@ class AgentExecutor:
         """
         Execute Gemini via CLI.
         
-        Gemini CLI supports:
-          gemini prompt "your prompt here"
+        Gemini CLI (v0.18+) supports:
+          gemini "your prompt here"   # Positional prompt
+          gemini -y "prompt"          # YOLO mode (auto-accept)
         """
         # Combine system and user prompt
         full_prompt = context.user_prompt
         if context.system_prompt:
             full_prompt = f"{context.system_prompt}\n\n{context.user_prompt}"
         
-        cmd = ["gemini", "prompt", full_prompt]
+        # Use positional prompt with --yolo for autonomous mode
+        cmd = ["gemini", "--yolo", full_prompt]
         cwd = context.working_directory or "."
         
         try:

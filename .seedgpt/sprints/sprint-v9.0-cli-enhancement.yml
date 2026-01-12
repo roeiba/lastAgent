@@ -1,0 +1,107 @@
+# Sprint v9.0 - CLI Enhancement: Rich TUI Foundation
+# Transform lastAgent into a first-class CLI agent matching claude-cli/gemini-cli
+
+sprint:
+  version: "9.0"
+  name: "CLI Enhancement - Rich TUI Foundation"
+  status: completed
+  start_date: "2026-01-12"
+  end_date: "2026-01-12"
+  goal: >
+    Establish Rich TUI foundation with Typer framework, streaming output,
+    spinners, and beautiful terminal rendering to match modern AI CLI standards.
+
+epics:
+  - id: E9.1
+    name: "Rich Console Infrastructure"
+    status: planned
+    stories:
+      - id: S9.1.1
+        name: "Migrate to Typer CLI framework"
+        points: 2
+        status: planned
+        description: >
+          Replace argparse with Typer for type-annotated commands and Rich integration.
+          Maintain all existing commands (chat, agents, server, workflow).
+        acceptance_criteria:
+          - All existing CLI commands work identically
+          - Commands use Typer decorators with type hints
+          - Help text is auto-generated and beautiful
+
+      - id: S9.1.2
+        name: "Implement console module with color schemes"
+        points: 3
+        status: planned
+        description: >
+          Create cli/tui/console.py with branded color scheme, panels, headers,
+          and consistent styling matching premium AI CLIs.
+        acceptance_criteria:
+          - Consistent color palette across all output
+          - Header panels for major operations
+          - Info/warning/error/success helper functions
+
+      - id: S9.1.3
+        name: "Add spinners and progress indicators"
+        points: 2
+        status: planned
+        description: >
+          Implement animated spinners for council voting, agent execution,
+          and other long-running operations.
+        acceptance_criteria:
+          - Spinner shows during council selection
+          - Spinner shows during agent execution
+          - Graceful fallback for non-TTY environments
+
+      - id: S9.1.4
+        name: "Implement streaming output renderer"
+        points: 3
+        status: planned
+        description: >
+          Create streaming response renderer that displays tokens as they arrive,
+          with proper buffering and line wrapping.
+        acceptance_criteria:
+          - Responses stream character-by-character
+          - Code blocks accumulate and render properly
+          - No flickering or visual artifacts
+
+      - id: S9.1.5
+        name: "Add markdown rendering for responses"
+        points: 3
+        status: planned
+        description: >
+          Render agent responses with markdown formatting including syntax-highlighted
+          code blocks, headers, lists, and emphasis.
+        acceptance_criteria:
+          - Code blocks show with syntax highlighting
+          - Headers, lists, bold/italic render correctly
+          - --no-markdown flag for plain output
+
+dependencies:
+  new:
+    - "typer[all]>=0.9.0"
+    - "rich>=13.0.0"
+  
+files_to_create:
+  - cli/__main__.py
+  - cli/app.py
+  - cli/commands/__init__.py
+  - cli/commands/chat.py
+  - cli/commands/agents.py
+  - cli/commands/server.py
+  - cli/commands/workflow.py
+  - cli/tui/__init__.py
+  - cli/tui/console.py
+  - cli/tui/spinners.py
+  - cli/tui/streaming.py
+
+files_to_modify:
+  - cli/__init__.py
+  - pyproject.toml
+
+verification:
+  automated:
+    - pytest tests/test_cli_commands.py -v
+  manual:
+    - "lastagent chat 'Hello' shows spinner and streaming response"
+    - "lastagent --help shows beautiful help text"
+    - "lastagent agents renders in colored table"

@@ -1,0 +1,92 @@
+# Sprint v9.3 - CLI Enhancement: Polish & Distribution
+# Shell completions, installation wizard, and documentation
+
+sprint:
+  version: "9.3"
+  name: "CLI Enhancement - Polish & Distribution"
+  status: planned
+  start_date: null
+  end_date: null
+  goal: >
+    Complete CLI experience with shell completions, installation wizard,
+    semantic versioning, and comprehensive documentation.
+
+epics:
+  - id: E9.4
+    name: "Installation & Completions"
+    status: planned
+    stories:
+      - id: S9.4.1
+        name: "Generate shell completions"
+        points: 2
+        status: planned
+        description: >
+          Use Typer's built-in completion generation for bash, zsh, and fish.
+          Add 'lastagent --install-completion' command.
+        acceptance_criteria:
+          - bash/zsh/fish completions generated
+          - --install-completion installs to shell
+          - Tab completes commands and options
+
+      - id: S9.4.2
+        name: "Implement installation wizard"
+        points: 3
+        status: planned
+        description: >
+          Create 'lastagent init' command that guides users through
+          API key setup, default agent selection, and configuration.
+        acceptance_criteria:
+          - Interactive prompts for each API key
+          - Tests API connectivity
+          - Writes config to ~/.lastagent/config.yml
+
+      - id: S9.4.3
+        name: "Add semantic versioning"
+        points: 2
+        status: planned
+        description: >
+          Implement --version flag with semantic version from pyproject.toml,
+          including git commit hash for dev builds.
+        acceptance_criteria:
+          - 'lastagent --version' shows version
+          - Version reads from pyproject.toml
+          - Dev builds show commit hash
+
+      - id: S9.4.4
+        name: "Write comprehensive documentation"
+        points: 3
+        status: planned
+        description: >
+          Create CLI_USAGE.md with examples for all commands,
+          update README.md, and ensure all commands have rich help text.
+        acceptance_criteria:
+          - CLI_USAGE.md covers all commands
+          - README Quick Start updated
+          - All --help output is comprehensive
+
+files_to_create:
+  - cli/completions/__init__.py
+  - cli/completions/generate.py
+  - cli/commands/init.py
+  - docs/CLI_USAGE.md
+
+files_to_modify:
+  - cli/app.py
+  - README.md
+  - pyproject.toml
+
+verification:
+  automated:
+    - pytest tests/test_cli_completions.py -v
+  manual:
+    - "Tab completion works in zsh"
+    - "lastagent init walks through setup"
+    - "lastagent --version shows correct version"
+
+final_deliverables:
+  - Full Typer-based CLI with Rich TUI
+  - Interactive REPL with history
+  - MCP server for agent-to-agent communication
+  - Shell completions for bash/zsh/fish
+  - Installation wizard
+  - Comprehensive documentation

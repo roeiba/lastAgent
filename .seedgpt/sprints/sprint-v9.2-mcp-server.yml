@@ -1,0 +1,141 @@
+# Sprint v9.2 - CLI Enhancement: MCP Server Mode
+# Enable lastAgent to be called by other agents via Model Context Protocol
+
+sprint:
+  version: "9.2"
+  name: "CLI Enhancement - MCP Server Mode"
+  status: completed
+  start_date: "2026-01-12"
+  end_date: "2026-01-12"
+  goal: >
+    Implement MCP server mode that exposes lastAgent capabilities to
+    other agents via Model Context Protocol, enabling full mesh participation.
+
+epics:
+  - id: E9.3
+    name: "MCP Server Implementation"
+    status: planned
+    stories:
+      - id: S9.3.1
+        name: "Create MCP server foundation"
+        points: 3
+        status: planned
+        description: >
+          Create mcp/server.py using fastmcp with stdio transport,
+          proper lifecycle handling, and error recovery.
+        acceptance_criteria:
+          - 'lastagent mcp' starts stdio server
+          - Server responds to MCP initialization
+          - Graceful shutdown on SIGTERM
+
+      - id: S9.3.2
+        name: "Expose lastagent_prompt tool"
+        points: 3
+        status: planned
+        description: >
+          Implement primary MCP tool for task submission with optional
+          system prompt, agent override, and working directory.
+        acceptance_criteria:
+          - lastagent_prompt(prompt, system?, agent?) works
+          - Returns agent response as string
+          - Errors return structured error objects
+
+      - id: S9.3.3
+        name: "Expose lastagent_agents tool"
+        points: 2
+        status: planned
+        description: >
+          Implement MCP tool for agent discovery with optional
+          capability filtering.
+        acceptance_criteria:
+          - lastagent_agents() returns all agents
+          - lastagent_agents(capability="coding") filters
+          - Returns list of agent dicts with capabilities
+
+      - id: S9.3.4
+        name: "Expose capability discovery tool"
+        points: 2
+        status: planned
+        description: >
+          Implement get_lastagent_capabilities() returning Agent Card
+          with full capability manifest for A2A discovery.
+        acceptance_criteria:
+          - Returns structured Agent Card
+          - Includes version, capabilities, tools list
+          - Follows A2A agent card specification
+
+      - id: S9.3.5
+        name: "Integrate with agents-parliament"
+        points: 3
+        status: planned
+        description: >
+          Add lastAgent to agents-parliament SERVERS definition and
+          test interoperability with Claude/Gemini MCP servers.
+        acceptance_criteria:
+          - lastagent listed in agents-parliament installer
+          - Claude can call lastAgent via MCP
+          - Gemini can call lastAgent via MCP
+
+mcp_tools:
+  - name: lastagent_prompt
+    description: "Submit a task to LastAgent for routing and execution"
+    parameters:
+      prompt: { type: string, required: true }
+      system: { type: string, required: false }
+      agent: { type: string, required: false }
+      directory: { type: string, required: false }
+    returns: string
+
+  - name: lastagent_in_directory
+    description: "Execute task with specific working directory context"
+    parameters:
+      prompt: { type: string, required: true }
+      directory: { type: string, required: true }
+    returns: string
+
+  - name: lastagent_with_agent
+    description: "Force task execution with specific agent (bypass council)"
+    parameters:
+      prompt: { type: string, required: true }
+      agent: { type: string, required: true }
+    returns: string
+
+  - name: lastagent_agents
+    description: "List available agents, optionally filtered by capability"
+    parameters:
+      capability: { type: string, required: false }
+    returns: array
+
+  - name: get_lastagent_capabilities
+    description: "Return Agent Card for capability discovery"
+    parameters: {}
+    returns: object
+
+  - name: get_lastagent_version
+    description: "Return LastAgent version string"
+    parameters: {}
+    returns: string
+
+dependencies:
+  new:
+    - "mcp>=1.0.0"  # Or fastmcp
+
+files_to_create:
+  - mcp/__init__.py
+  - mcp/server.py
+  - mcp/tools.py
+  - cli/commands/mcp.py
+
+files_to_modify:
+  - cli/app.py
+  - pyproject.toml
+  # In agents-parliament:
+  - ../agents-parliament/src/agenters/install.py
+
+verification:
+  automated:
+    - pytest tests/test_mcp_server.py -v
+  manual:
+    - "lastagent mcp responds to MCP init"
+    - "Claude can invoke lastagent_prompt via MCP"
+    - "get_lastagent_capabilities returns valid Agent Card"

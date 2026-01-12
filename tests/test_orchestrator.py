@@ -104,10 +104,20 @@ class TestOrchestrator:
     @pytest.mark.asyncio
     async def test_process_task_returns_result(self, orchestrator):
         """Test that process_task returns an ExecutionResult."""
-        result = await orchestrator.process_task(
-            system_prompt="You are a helpful assistant.",
-            user_prompt="Write hello world.",
-        )
+        # Mock the executor to avoid calling real CLI
+        with patch.object(orchestrator._executor, 'execute') as mock_execute:
+            mock_execute.return_value = ExecutionResult(
+                task_id="test-123",
+                agent="claude",
+                response="Hello, World!",
+                success=True,
+                duration_ms=100,
+            )
+            
+            result = await orchestrator.process_task(
+                system_prompt="You are a helpful assistant.",
+                user_prompt="Write hello world.",
+            )
         
         assert isinstance(result, ExecutionResult)
         assert result.task_id
@@ -156,11 +166,21 @@ class TestOrchestrator:
     @pytest.mark.asyncio
     async def test_process_task_with_approval_mode(self, orchestrator):
         """Test processing with explicit approval mode."""
-        result = await orchestrator.process_task(
-            system_prompt="",
-            user_prompt="Test prompt",
-            approval_mode=ApprovalMode.AUTO,
-        )
+        # Mock the executor to avoid calling real CLI
+        with patch.object(orchestrator._executor, 'execute') as mock_execute:
+            mock_execute.return_value = ExecutionResult(
+                task_id="test-approval",
+                agent="claude",
+                response="Mocked response",
+                success=True,
+                duration_ms=50,
+            )
+            
+            result = await orchestrator.process_task(
+                system_prompt="",
+                user_prompt="Test prompt",
+                approval_mode=ApprovalMode.AUTO,
+            )
         
         assert result.success
         

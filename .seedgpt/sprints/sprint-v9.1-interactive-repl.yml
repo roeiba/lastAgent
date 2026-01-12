@@ -1,0 +1,100 @@
+# Sprint v9.1 - CLI Enhancement: Interactive REPL Mode
+# Add interactive shell experience with history and in-session commands
+
+sprint:
+  version: "9.1"
+  name: "CLI Enhancement - Interactive REPL Mode"
+  status: completed
+  start_date: "2026-01-12"
+  end_date: "2026-01-12"
+  goal: >
+    Implement interactive REPL mode with command history, multi-line input,
+    in-session commands, and configuration management.
+
+epics:
+  - id: E9.2
+    name: "Interactive Experience"
+    status: planned
+    stories:
+      - id: S9.2.1
+        name: "Implement REPL session manager"
+        points: 3
+        status: planned
+        description: >
+          Create cli/repl/session.py using prompt_toolkit for interactive terminal
+          with proper input handling, styling, and event loop integration.
+        acceptance_criteria:
+          - Running 'lastagent' (no args) enters REPL
+          - Prompt shows current context (agent, directory)
+          - Ctrl+C cancels current input, Ctrl+D exits
+
+      - id: S9.2.2
+        name: "Add persistent command history"
+        points: 2
+        status: planned
+        description: >
+          Implement history storage in ~/.lastagent/history with up/down navigation
+          and reverse search (Ctrl+R).
+        acceptance_criteria:
+          - History persists across sessions
+          - Up/down arrows navigate history
+          - Ctrl+R enables reverse search
+
+      - id: S9.2.3
+        name: "Implement multi-line input"
+        points: 3
+        status: planned
+        description: >
+          Support multi-line prompts using triple quotes or backslash continuation,
+          similar to Python REPL.
+        acceptance_criteria:
+          - Triple-quoted strings allow multi-line
+          - Backslash at EOL continues to next line
+          - Proper indentation handling
+
+      - id: S9.2.4
+        name: "Add in-session commands"
+        points: 2
+        status: planned
+        description: >
+          Implement slash commands for session control:
+          /help, /clear, /agents, /agent <name>, /exit, /history
+        acceptance_criteria:
+          - All slash commands functional
+          - /help shows command list
+          - /agents shows inline agent table
+
+      - id: S9.2.5
+        name: "Implement config management command"
+        points: 3
+        status: planned
+        description: >
+          Create 'lastagent config' command with get/set/list subcommands
+          for managing settings (API keys, defaults, preferences).
+        acceptance_criteria:
+          - 'lastagent config' shows all settings
+          - 'lastagent config set <key> <value>' updates setting
+          - Sensitive values masked in output
+
+dependencies:
+  new:
+    - "prompt-toolkit>=3.0.0"
+
+files_to_create:
+  - cli/repl/__init__.py
+  - cli/repl/session.py
+  - cli/repl/history.py
+  - cli/repl/commands.py
+  - cli/commands/config.py
+
+files_to_modify:
+  - cli/app.py
+  - pyproject.toml
+
+verification:
+  automated:
+    - pytest tests/test_repl.py -v
+  manual:
+    - "lastagent enters interactive mode"
+    - "History persists and navigates with arrows"
+    - "/agents shows agent list inline"
