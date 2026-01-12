@@ -24,6 +24,18 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
+# Enterprise structured logging
+try:
+    from src.observability import get_logger, log_agent_selected, log_error
+except ImportError:
+    try:
+        from .observability import get_logger, log_agent_selected, log_error
+    except ImportError:
+        # Fallback for when observability is not available
+        def get_logger(name): return None
+        def log_agent_selected(*args, **kwargs): pass
+        def log_error(*args, **kwargs): pass
+
 # Add llm-council to path for imports
 LLM_COUNCIL_PATH = Path(__file__).parent.parent.parent / "llm-council" / "backend"
 if str(LLM_COUNCIL_PATH) not in sys.path:
@@ -92,6 +104,7 @@ class CouncilSelector:
         self.task_analyzer = get_task_analyzer()
         self.agent_matcher = get_agent_matcher()
         self.use_mock = use_mock
+        self._log = get_logger("council")
         
         # Try to import llm-council modules
         self._council_available = False
@@ -132,10 +145,21 @@ class CouncilSelector:
         
         # If mock mode or council unavailable, use local selection
         if self.use_mock or not self._council_available:
+            if self._log:
+                self._log.info(
+                    "fallback_selection_used",
+                    reason="mock_mode" if self.use_mock else "council_unavailable",
+                )
             return self._fallback_selection(analysis, match_result)
             
         # Run 3-stage council process
         try:
+            if self._log:
+                self._log.info(
+                    "council_selection_started",
+                    available_agents=self.config.get_agent_names(),
+                    council_models=getattr(self, '_council_models', []),
+                )
             return await self._run_council_selection(
                 user_prompt,
                 system_prompt,
@@ -144,6 +168,11 @@ class CouncilSelector:
             )
         except Exception as e:
             # Fallback on error
+            log_error(
+                "council_selection_failed",
+                error_type=type(e).__name__,
+                error_message=str(e),
+            )
             return self._fallback_selection(analysis, match_result, error=str(e))
             
     async def _run_council_selection(
@@ -224,6 +253,12 @@ Format: <agent_name>: <brief reason>"""
                     selected_agent=selected,
                     reasoning=reasoning,
                 ))
+                if self._log:
+                    self._log.debug(
+                        "stage1_vote_collected",
+                        model=model,
+                        vote=selected,
+                    )
                 
         return votes
         
@@ -318,7 +353,17 @@ REASONING: <brief explanation>"""
             
         # Parse chairman response
         content = response.get("content", "")
-        return self._parse_chairman_response(content, votes, recommended)
+        selected, confidence, reasoning = self._parse_chairman_response(content, votes, recommended)
+        
+        if self._log:
+            self._log.info(
+                "stage3_chairman_decided",
+                selected_agent=selected,
+                confidence=confidence,
+            )
+        log_agent_selected(selected, 0, reasoning)
+        
+        return selected, confidence, reasoning
         
     def _fallback_selection(
         self,

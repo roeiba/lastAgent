@@ -21,6 +21,12 @@ from typing import Any, Dict, List, Optional
 
 from .config import get_config, AgentConfig
 
+# Enterprise structured logging
+try:
+    from src.observability import get_logger, log_error
+except ImportError:
+    from .observability import get_logger, log_error
+
 
 class ExecutionMethod(Enum):
     """How to execute an agent - CLI ONLY."""
@@ -64,6 +70,7 @@ class AgentExecutor:
     def __init__(self):
         """Initialize the executor."""
         self.config = get_config()
+        self._log = get_logger("executor")
         
     def _is_cli_available(self, command: str) -> bool:
         """Check if a CLI command is available on the system."""
@@ -84,7 +91,7 @@ class AgentExecutor:
         Returns:
             ExecutionResult with the response
         """
-        start_time = time.time()
+        start_time = time.perf_counter()
         
         try:
             agent = self.config.get_agent(agent_name)
@@ -92,6 +99,11 @@ class AgentExecutor:
             # Check if CLI is available
             cli_command = agent.command or agent_name
             if not self._is_cli_available(cli_command):
+                self._log.warning(
+                    "cli_not_available",
+                    agent=agent_name,
+                    command=cli_command,
+                )
                 return ExecutionResult(
                     success=False,
                     response="",
@@ -101,15 +113,37 @@ class AgentExecutor:
                     error=f"Agent CLI not installed: {cli_command}. Install it to use this agent.",
                 )
             
+            # Log CLI execution start
+            self._log.info(
+                "cli_execution_started",
+                agent=agent_name,
+                command=cli_command,
+                method="CLI_SUBPROCESS",
+            )
+            
             # Route to the appropriate CLI handler
             result = await self._execute_cli(agent_name, agent, context)
             
-            duration_ms = int((time.time() - start_time) * 1000)
+            duration_ms = int((time.perf_counter() - start_time) * 1000)
             result.duration_ms = duration_ms
+            
+            # Log CLI execution complete
+            self._log.info(
+                "cli_execution_completed",
+                agent=agent_name,
+                success=result.success,
+                duration_ms=duration_ms,
+            )
             return result
             
         except KeyError:
-            duration_ms = int((time.time() - start_time) * 1000)
+            duration_ms = int((time.perf_counter() - start_time) * 1000)
+            log_error(
+                "agent_not_found",
+                error_type="KeyError",
+                error_message=f"Unknown agent: {agent_name}",
+                agent=agent_name,
+            )
             return ExecutionResult(
                 success=False,
                 response="",
@@ -119,7 +153,14 @@ class AgentExecutor:
                 error=f"Unknown agent: {agent_name}",
             )
         except Exception as e:
-            duration_ms = int((time.time() - start_time) * 1000)
+            duration_ms = int((time.perf_counter() - start_time) * 1000)
+            log_error(
+                "cli_execution_failed",
+                error_type=type(e).__name__,
+                error_message=str(e),
+                agent=agent_name,
+                duration_ms=duration_ms,
+            )
             return ExecutionResult(
                 success=False,
                 response="",

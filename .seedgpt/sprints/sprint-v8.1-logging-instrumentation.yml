@@ -1,0 +1,145 @@
+# Sprint v8.1 - Full E2E Logging Instrumentation
+# Status: COMPLETE
+version: "v8.1"
+name: "Full E2E Logging Instrumentation"
+status: complete
+completed_date: "2026-01-12"
+progress: 100
+duration: "1 day"
+
+# =============================================================================
+# SPRINT GOAL
+# =============================================================================
+# Instrument all core modules with enterprise structured logging using structlog.
+# Every operation from API entry to exit will be logged with correlation IDs,
+# timing, and detailed context for complete observability.
+
+stories:
+  - id: S8.1.1
+    title: "Orchestrator logging instrumentation"
+    description: |
+      Add structured logging to orchestrator.py:
+      - Task received with trace_id
+      - Phase transitions (SELECTION → EXECUTION)
+      - Duration tracking per phase
+      - Final result logging
+    status: planned
+    priority: high
+    files:
+      - src/orchestrator.py
+    logging_points:
+      - "task_received" on process_task entry
+      - "selection_phase_started" before _select_agent
+      - "selection_phase_completed" after _select_agent with selected agent
+      - "approval_phase_started/completed" if approval required
+      - "execution_phase_started" before _execute_agent
+      - "execution_phase_completed" after _execute_agent
+      - "task_completed" on process_task exit
+
+  - id: S8.1.2
+    title: "Council selector logging instrumentation"
+    description: |
+      Add structured logging to council_selector.py:
+      - Council selection started
+      - Each council member vote
+      - Stage 1, 2, 3 transitions
+      - Final selection with confidence
+    status: planned
+    priority: high
+    files:
+      - src/council_selector.py
+    logging_points:
+      - "council_selection_started" with available agents
+      - "stage1_vote_collected" per model vote
+      - "stage2_ranking_collected" per model ranking
+      - "stage3_chairman_decided" final selection
+      - "fallback_selection_used" if council unavailable
+
+  - id: S8.1.3
+    title: "Executor logging instrumentation"
+    description: |
+      Add structured logging to executor.py:
+      - Agent execution started
+      - CLI command being run
+      - Execution completed with duration
+      - Error logging with full context
+    status: planned
+    priority: high
+    files:
+      - src/executor.py
+    logging_points:
+      - "agent_execution_started" with agent name, method
+      - "cli_command_executing" with sanitized command
+      - "agent_execution_completed" with duration, success
+      - "agent_execution_failed" with error details
+
+  - id: S8.1.4
+    title: "Mesh coordinator logging"
+    description: |
+      Add structured logging to mesh.py:
+      - Delegation requests
+      - Inter-agent calls
+      - Delegation chain tracking
+    status: planned
+    priority: medium
+    files:
+      - src/mesh.py
+    logging_points:
+      - "delegation_requested" from agent to agent
+      - "delegation_completed" with result
+      - "delegation_chain" for deep delegations
+
+  - id: S8.1.5
+    title: "Chat route logging enhancement"
+    description: |
+      Enhance chat.py route with:
+      - Request parsing logged
+      - Response formatting logged
+      - Error handling with full context
+    status: planned
+    priority: medium
+    files:
+      - api/routes/chat.py
+    logging_points:
+      - "chat_request_parsed" with message count
+      - "chat_response_formatted" with token counts
+      - "chat_error" with exception details
+
+  - id: S8.1.6
+    title: "Verification and testing"
+    description: |
+      Test full E2E logging flow:
+      - Make request and trace through all logs
+      - Verify correlation IDs flow correctly
+      - Validate log format and content
+    status: planned
+    priority: high
+
+deliverables:
+  - src/orchestrator.py (modified)
+  - src/council_selector.py (modified)
+  - src/executor.py (modified)
+  - src/mesh.py (modified)
+  - api/routes/chat.py (modified)
+
+# =============================================================================
+# EXPECTED LOG FLOW FOR A REQUEST
+# =============================================================================
+expected_log_flow: |
+  1. request_started (middleware) → trace_id generated
+  2. chat_request_parsed (chat.py)
+  3. task_received (orchestrator)
+  4. selection_phase_started (orchestrator)
+  5. council_selection_started (council_selector)
+  6. stage1_vote_collected × N models
+  7. stage2_ranking_collected × N models  
+  8. stage3_chairman_decided
+  9. selection_phase_completed (orchestrator)
+  10. execution_phase_started (orchestrator)
+  11. agent_execution_started (executor)
+  12. cli_command_executing (executor)
+  13. agent_execution_completed (executor)
+  14. execution_phase_completed (orchestrator)
+  15. task_completed (orchestrator)
+  16. chat_response_formatted (chat.py)
+  17. request_completed (middleware) → full duration

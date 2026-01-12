@@ -78,7 +78,7 @@ class TestOrchestrator:
     def test_orchestrator_initialization(self, orchestrator):
         """Test that orchestrator initializes correctly."""
         assert orchestrator.config is not None
-        assert orchestrator.logger is not None
+        assert orchestrator._log is not None
         
     def test_get_available_agents(self, orchestrator):
         """Test getting available agents."""

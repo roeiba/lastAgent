@@ -16,10 +16,35 @@ This orchestrator coordinates:
 
 import asyncio
 import logging
+import time
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
 from typing import Any, Dict, List, Optional
+
+# Enterprise structured logging
+try:
+    from src.observability import (
+        get_logger,
+        set_correlation_context,
+        log_phase_start,
+        log_phase_end,
+        log_agent_selected,
+        log_agent_execution_start,
+        log_agent_execution_end,
+        log_error,
+    )
+except ImportError:
+    from .observability import (
+        get_logger,
+        set_correlation_context,
+        log_phase_start,
+        log_phase_end,
+        log_agent_selected,
+        log_agent_execution_start,
+        log_agent_execution_end,
+        log_error,
+    )
 
 try:
     from src.config import get_config, AgentConfig
@@ -137,7 +162,7 @@ class Orchestrator:
     def __init__(self):
         """Initialize the orchestrator."""
         self.config = get_config()
-        self.logger = logging.getLogger("lastagent.orchestrator")
+        self._log = get_logger("orchestrator")
         
         # Internal state
         self._tasks: Dict[str, Task] = {}
@@ -170,9 +195,8 @@ class Orchestrator:
             ExecutionResult with the agent's response
         """
         import uuid
-        import time
         
-        start_time = time.time()
+        start_time = time.perf_counter()
         
         # Create task
         task = Task(
@@ -182,12 +206,22 @@ class Orchestrator:
             working_directory=working_directory,
         )
         self._tasks[task.id] = task
-        self.logger.info(f"Processing task {task.id}: {user_prompt[:50]}...")
+        
+        # Log task received
+        self._log.info(
+            "task_received",
+            task_id=task.id,
+            prompt_preview=user_prompt[:100],
+        )
         
         try:
             # Step 1: Select agent via council
             task.status = TaskStatus.COUNCIL_SELECTING
+            log_phase_start("SELECTION")
+            selection_start = time.perf_counter()
             selection = await self._select_agent(task)
+            selection_duration = (time.perf_counter() - selection_start) * 1000
+            log_phase_end("SELECTION", selection_duration, agent=selection.selected_agent)
             
             # Step 2: Check approval if needed
             mode = approval_mode or ApprovalMode(
@@ -209,18 +243,36 @@ class Orchestrator:
             
             # Step 3: Execute agent
             task.status = TaskStatus.EXECUTING
+            log_phase_start("EXECUTION")
+            execution_start = time.perf_counter()
             result = await self._execute_agent(task, selection.selected_agent)
+            execution_duration = (time.perf_counter() - execution_start) * 1000
+            log_phase_end("EXECUTION", execution_duration, agent=selection.selected_agent, success=result.success)
             
             # Step 4: Log decision
             await self._log_decision(task, selection, result)
             
             task.status = TaskStatus.COMPLETED
+            total_duration = (time.perf_counter() - start_time) * 1000
+            self._log.info(
+                "task_completed",
+                task_id=task.id,
+                agent=selection.selected_agent,
+                success=result.success,
+                duration_ms=round(total_duration, 2),
+            )
             return result
             
         except Exception as e:
             task.status = TaskStatus.FAILED
-            self.logger.error(f"Task {task.id} failed: {e}")
-            duration_ms = int((time.time() - start_time) * 1000)
+            duration_ms = int((time.perf_counter() - start_time) * 1000)
+            log_error(
+                "task_failed",
+                error_type=type(e).__name__,
+                error_message=str(e),
+                task_id=task.id,
+                duration_ms=duration_ms,
+            )
             return ExecutionResult(
                 task_id=task.id,
                 agent="unknown",
@@ -234,7 +286,7 @@ class Orchestrator:
         """
         Select the best agent for the task using LLM Council.
         """
-        self.logger.info("Selecting agent via council...")
+        self._log.info("council_selection_started", available_agents=self.config.get_agent_names())
         
         # Use the real council selector
         council_result = await self._council_selector.select_agent(
@@ -299,7 +351,7 @@ class Orchestrator:
         """
         Execute the selected agent with the original prompts.
         """
-        self.logger.info(f"Executing agent: {agent_name}")
+        log_agent_execution_start(agent_name)
         
         # Use the real executor
         context = ExecutionContext(
@@ -360,8 +412,10 @@ class Orchestrator:
         )
         self._decisions.append(decision)
         
-        self.logger.info(
-            f"Decision logged: {decision.decision_type} -> {selection.selected_agent}"
+        self._log.info(
+            "decision_logged",
+            decision_type=decision.decision_type,
+            agent=selection.selected_agent,
         )
         
     def get_available_agents(self) -> List[str]:
